@@ -3,6 +3,8 @@ Config = {}
 Config.DiscordMiningLogs = false --Set true to enable discord logs for mined ore. (Can set webhooks in wasabi_mining/server/discordwebhook.lua)
 Config.DiscordCheatLogs = true --Set true to enable possible cheater logs. (Can set webhooks in wasabi_mining/server/discordwebhook.lua)
 
+Config.OldESX = false --Getting 'canCarryItem' error? Set this to true if you're using limit system.
+
 Config.Axe = `prop_tool_pickaxe` --Default: `prop_tool_pickaxe`
 
 Config.AxeBreakPercent = 50 --When failing to mine rock, this is the percentage of a chance that your pickaxe will 'break'
