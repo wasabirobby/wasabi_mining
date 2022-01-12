@@ -11,7 +11,6 @@ ESX.RegisterServerCallback('wasabi_mining:checkPick', function(source, cb, itemn
         cb(false)
     end
 end)
-
 RegisterServerEvent("wasabi_mining:mineRock")
 AddEventHandler("wasabi_mining:mineRock", function(distance)
     if distance ~= nil then
@@ -19,14 +18,27 @@ AddEventHandler("wasabi_mining:mineRock", function(distance)
             local awardItem = Config.Rocks[math.random(#Config.Rocks)]
             local xPlayer = ESX.GetPlayerFromId(source)
             local awardItemLabel = ESX.GetItemLabel(awardItem)
-            if xPlayer.canCarryItem(awardItem, 1) then
-                xPlayer.addInventoryItem(awardItem, 1)
-                TriggerClientEvent('wasabi_mining:notify', source, Language['rewarded']..' '..awardItemLabel)
-                if Config.DiscordMiningLogs then
-                    sendToDiscord("Wasabi Mining","**"..GetPlayerName(source).."** just mined rocks and was rewarded a "..awardItemLabel.."!\n**"..ESX.GetPlayerFromId(source).getIdentifier().."**", 3066993)
-                end 
+            if Config.OldESX then
+                local limitItem = xPlayer.getInventoryItem(awardItem)
+                if limitItem.limit == -1 or (limitItem.count + 1) <= limitItem.limit then
+                    xPlayer.addInventoryItem(awardItem, 1)
+                    TriggerClientEvent('wasabi_mining:notify', source, Language['rewarded']..' '..awardItemLabel)
+                    if Config.DiscordMiningLogs then
+                        sendToDiscord("Wasabi Mining","**"..GetPlayerName(source).."** just mined rocks and was rewarded a "..awardItemLabel.."!\n**"..ESX.GetPlayerFromId(source).getIdentifier().."**", 3066993)
+                    end
+                else
+                    TriggerClientEvent('wasabi_mining:notify', source, Language['cantcarry']..' '..awardItemLabel)
+                end
             else
-                TriggerClientEvent('wasabi_mining:notify', source, Language['cantcarry']..' '..awardItemLabel)
+                if xPlayer.canCarryItem(awardItem, 1) then
+                    xPlayer.addInventoryItem(awardItem, 1)
+                    TriggerClientEvent('wasabi_mining:notify', source, Language['rewarded']..' '..awardItemLabel)
+                    if Config.DiscordMiningLogs then
+                        sendToDiscord("Wasabi Mining","**"..GetPlayerName(source).."** just mined rocks and was rewarded a "..awardItemLabel.."!\n**"..ESX.GetPlayerFromId(source).getIdentifier().."**", 3066993)
+                    end
+                else
+                    TriggerClientEvent('wasabi_mining:notify', source, Language['cantcarry']..' '..awardItemLabel)
+                end
             end
         else
             local xPlayer = ESX.GetPlayerFromId(source)
