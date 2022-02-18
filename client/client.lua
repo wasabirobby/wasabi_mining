@@ -15,12 +15,13 @@ end)
 --Mining Functionality
 Citizen.CreateThread(function()
     while true do 
-        Wait(0) 
+        local Sleep = 1500
         local player = PlayerPedId()
         local pos = GetEntityCoords(player)
         for i=1, #Config.MiningAreas, 1 do
             local dist = #(GetEntityCoords(player) - Config.MiningAreas[i])	
             if dist <= 10 and not mining then
+                Sleep = 0
                 DrawMarker(0, vector3(Config.MiningAreas[i].x, Config.MiningAreas[i].y, Config.MiningAreas[i].z-0.5), 0.0, 0.0, 0.0, 0, 0.0, 0.0, 0.25, 0.25, 0.25, 255, 205, 0, 100, false, true, 2, true, false, false, false) 
                 if dist <= 1.5 and not mining then
                     DrawText3Ds(Config.MiningAreas[i], Language['mine_rock'], 0.55, 1.5, 0.7)
@@ -72,17 +73,19 @@ Citizen.CreateThread(function()
                 end
             end
         end
+        Wait(Sleep)
      end
  end)
 
  --Sell Shop Functionality
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(0)
+        local Sleep = 1500
 		local player = PlayerPedId()
 		local playerCoords = GetEntityCoords(player)
 		local dist = #(playerCoords - Config.SellShop)
 		if dist <= 10.0 then
+            Sleep = 0
             DrawMarker(0, vector3(Config.SellShop.x, Config.SellShop.y, Config.SellShop.z-0.5), 0.0, 0.0, 0.0, 0, 0.0, 0.0, 0.25, 0.25, 0.25, 255, 205, 0, 100, false, true, 2, true, false, false, false) 
             if dist <= 1.5 then
                 DrawText3Ds(Config.SellShop, Language['sell_material'], 0.55, 1.5, 0.7)
@@ -91,6 +94,7 @@ Citizen.CreateThread(function()
                 end
 			end
 		end
+    Wait(Sleep)
 	end
 end)
 
