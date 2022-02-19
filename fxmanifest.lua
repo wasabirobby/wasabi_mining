@@ -1,6 +1,12 @@
-fx_version 'bodacious'
+fx_version 'cerulean'
 
 game 'gta5'
+
+version '1.1.0'
+
+author 'wasabirobby#5110'
+
+description 'A simple yet smooth ESX based mining script'
 
 ui_page 'ui/index.html'
 
