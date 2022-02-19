@@ -1,17 +1,17 @@
 local levels = {
-    ["easy"] = {
+    easy = {
         duration = 3000,
         width = 30
     },
-    ["normal"] = {
+    normal = {
         duration = 1500 ,
         width = 20,
     },
-    ["medium"] = {
+    medium = {
         duration = 2000,
         width = 1
     },
-    ["hard"] = {
+    hard = {
         duration = 650 ,
         width = 10,
     }

@@ -11,6 +11,7 @@ ESX.RegisterServerCallback('wasabi_mining:checkPick', function(source, cb, itemn
         cb(false)
     end
 end)
+
 RegisterServerEvent("wasabi_mining:mineRock")
 AddEventHandler("wasabi_mining:mineRock", function(distance)
     if distance ~= nil then
