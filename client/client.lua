@@ -1,3 +1,6 @@
+-----------------For support, scripts, and more----------------
+--------------- https://discord.gg/wasabiscripts  -------------
+---------------------------------------------------------------
 ESX = nil
 local mining = false
 
