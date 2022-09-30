@@ -1,3 +1,6 @@
+-----------------For support, scripts, and more----------------
+--------------- https://discord.gg/wasabiscripts  -------------
+---------------------------------------------------------------
 Config = {}
 
 Config.DiscordMiningLogs = false --Set true to enable discord logs for mined ore. (Can set webhooks in wasabi_mining/server/discordwebhook.lua)
