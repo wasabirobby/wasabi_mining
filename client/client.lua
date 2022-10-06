@@ -1,14 +1,11 @@
 -----------------For support, scripts, and more----------------
 --------------- https://discord.gg/wasabiscripts  -------------
 ---------------------------------------------------------------
-ESX = nil
+
+ESX = exports["es_extended"]:getSharedObject()
 local mining = false
 
-Citizen.CreateThread(function()
-    while ESX == nil do
-        TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-        Citizen.Wait(0)
-    end
+wasabi_miningCreateThread(function()
     for i=1, #Config.MiningAreas, 1 do
         CreateBlip(Config.MiningAreas[i], 85, 5, Language['mining_blips'], 0.75)
     end
@@ -16,8 +13,8 @@ Citizen.CreateThread(function()
 end)
 
 --Mining Functionality
-Citizen.CreateThread(function()
-    while true do 
+wasabi_miningCreateThread(function()
+    while true do
         local Sleep = 1500
         local player = PlayerPedId()
         local pos = GetEntityCoords(player)
@@ -81,7 +78,7 @@ Citizen.CreateThread(function()
  end)
 
  --Sell Shop Functionality
-Citizen.CreateThread(function()
+wasabi_miningCreateThread(function()
 	while true do
         local Sleep = 1500
 		local player = PlayerPedId()

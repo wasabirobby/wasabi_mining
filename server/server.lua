@@ -1,6 +1,32 @@
-ESX = nil
+-----------------For support, scripts, and more----------------
+--------------- https://discord.gg/wasabiscripts  -------------
+---------------------------------------------------------------
 
-TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+ESX = exports["es_extended"]:getSharedObject()
+
+MySQL.ready(function()
+    if Config.OldESX then
+        MySQL.Sync.execute(
+            "INSERT IGNORE INTO `items` (`name`, `label`, `limit`, `rare`, `can_remove`) VALUES " ..
+                "('pickaxe', 'Pickaxe', 1, 0, 1), " ..
+                "('emerald', 'Emerald', 20, 0, 1), " ..
+                "('diamond', 'Diamond', 20, 0, 1), " ..
+                "('copper', 'Copper', 20, 0, 1), " ..
+                "('iron', 'Iron', 20, 0, 1), " ..
+                "('steel', 'Steel', 40, 0, 1); "
+        )
+    elseif not Config.OldESX then
+        MySQL.Sync.execute(
+            "INSERT IGNORE INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES " ..
+            "('pickaxe', 'Pickaxe', 1, 0, 1), " ..
+            "('emerald', 'Emerald', 20, 0, 1), " ..
+            "('diamond', 'Diamond', 20, 0, 1), " ..
+            "('copper', 'Copper', 20, 0, 1), " ..
+            "('iron', 'Iron', 20, 0, 1), " ..
+            "('steel', 'Steel', 40, 0, 1); "
+        )
+    end
+end)
 
 ESX.RegisterServerCallback('wasabi_mining:checkPick', function(source, cb, itemname)
     local xPlayer = ESX.GetPlayerFromId(source)
