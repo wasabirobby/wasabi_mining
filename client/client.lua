@@ -1,14 +1,11 @@
 -----------------For support, scripts, and more----------------
 --------------- https://discord.gg/wasabiscripts  -------------
 ---------------------------------------------------------------
-ESX = nil
+
+ESX = exports["es_extended"]:getSharedObject()
 local mining = false
 
-Citizen.CreateThread(function()
-    while ESX == nil do
-        TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-        Citizen.Wait(0)
-    end
+CreateThread(function()
     for i=1, #Config.MiningAreas, 1 do
         CreateBlip(Config.MiningAreas[i], 85, 5, Language['mining_blips'], 0.75)
     end
@@ -16,8 +13,8 @@ Citizen.CreateThread(function()
 end)
 
 --Mining Functionality
-Citizen.CreateThread(function()
-    while true do 
+CreateThread(function()
+    while true do
         local Sleep = 1500
         local player = PlayerPedId()
         local pos = GetEntityCoords(player)
@@ -37,7 +34,7 @@ Citizen.CreateThread(function()
                                 local axe = CreateObject(model, GetEntityCoords(PlayerPedId()), true, false, false)
                                 AttachEntityToEntity(axe, PlayerPedId(), GetPedBoneIndex(PlayerPedId(), 57005), 0.09, 0.03, -0.02, -78.0, 13.0, 28.0, false, true, true, true, 0, true)
                                 while mining do
-                                    Wait(0)
+                                    Wait()
                                     local unarmed = `WEAPON_UNARMED`
                                     SetCurrentPedWeapon(PlayerPedId(), unarmed)
                                     ShowHelp(Language['intro_instruction'])
@@ -81,7 +78,7 @@ Citizen.CreateThread(function()
  end)
 
  --Sell Shop Functionality
-Citizen.CreateThread(function()
+CreateThread(function()
 	while true do
         local Sleep = 1500
 		local player = PlayerPedId()

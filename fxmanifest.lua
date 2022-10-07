@@ -1,6 +1,12 @@
+-----------------For support, scripts, and more----------------
+--------------- https://discord.gg/wasabiscripts  -------------
+---------------------------------------------------------------
+
 fx_version 'cerulean'
 
 game 'gta5'
+
+lua54 'yes'
 
 version '1.1.1'
 
@@ -17,14 +23,13 @@ files {
 }
 
 client_scripts {
-    'client/client.lua',
-    'client/functions.lua',
-    'client/skillbar.lua',
-    'config.lua'
+    'client/*.lua'
 }
 
 server_scripts {
-    'server/server.lua',
-    'server/discordwebhook.lua',
+    'server/*.lua'
+}
+
+shared_scripts {
     'config.lua'
 }
