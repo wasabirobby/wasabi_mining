@@ -5,7 +5,7 @@
 ESX = exports["es_extended"]:getSharedObject()
 local mining = false
 
-wasabi_miningCreateThread(function()
+CreateThread(function()
     for i=1, #Config.MiningAreas, 1 do
         CreateBlip(Config.MiningAreas[i], 85, 5, Language['mining_blips'], 0.75)
     end
@@ -13,7 +13,7 @@ wasabi_miningCreateThread(function()
 end)
 
 --Mining Functionality
-wasabi_miningCreateThread(function()
+CreateThread(function()
     while true do
         local Sleep = 1500
         local player = PlayerPedId()
@@ -34,7 +34,7 @@ wasabi_miningCreateThread(function()
                                 local axe = CreateObject(model, GetEntityCoords(PlayerPedId()), true, false, false)
                                 AttachEntityToEntity(axe, PlayerPedId(), GetPedBoneIndex(PlayerPedId(), 57005), 0.09, 0.03, -0.02, -78.0, 13.0, 28.0, false, true, true, true, 0, true)
                                 while mining do
-                                    Wait(0)
+                                    Wait()
                                     local unarmed = `WEAPON_UNARMED`
                                     SetCurrentPedWeapon(PlayerPedId(), unarmed)
                                     ShowHelp(Language['intro_instruction'])
@@ -78,7 +78,7 @@ wasabi_miningCreateThread(function()
  end)
 
  --Sell Shop Functionality
-wasabi_miningCreateThread(function()
+CreateThread(function()
 	while true do
         local Sleep = 1500
 		local player = PlayerPedId()
