@@ -18,6 +18,7 @@ This resource was created as a free interactive mining script for ESX servers.
 - Download 
 - Put script in your `resources` directory
 
+- Install items.sql or insert items into your items
 
 - Put true to old ESX if using limit system, otherwise false
 
