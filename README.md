@@ -1,4 +1,4 @@
-#wasabi_mining
+# wasabi_mining
 
 This resource was created as a free interactive mining script for ESX servers.
 
