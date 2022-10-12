@@ -8,7 +8,7 @@ game 'gta5'
 
 lua54 'yes'
 
-version '1.1.3'
+version '1.1.4'
 
 author 'wasabirobby#5110'
 
