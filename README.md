@@ -32,7 +32,7 @@ This resource was created as a free interactive mining script for ESX servers.
 - You must add the item `pickaxe` to one of your in-game shops or have a place for your players to obtain.
 
 ## Preview
-- Preview will be here
+[YouTube - Wasabi Mining](https://www.youtube.com/watch?v=LUJSA47ZwBg)
 
 # Support
 <a href='https://discord.gg/79zjvy4JMs'>![Discord Banner 2](https://discordapp.com/api/guilds/1025493337031049358/widget.png?style=banner2)</a>
