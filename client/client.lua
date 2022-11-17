@@ -6,99 +6,133 @@ ESX = exports["es_extended"]:getSharedObject()
 local mining = false
 
 CreateThread(function()
-    for i=1, #Config.MiningAreas, 1 do
-        CreateBlip(Config.MiningAreas[i], 85, 5, Language['mining_blips'], 0.75)
+    for i=1, #Config.miningAreas, 1 do
+        createBlip(Config.miningAreas[i], 85, 5, Strings.mining_blips, 0.75)
     end
-    CreateBlip(Config.SellShop, 207, 5, Language['sell_shop_blip'], 0.80)
 end)
 
---Mining Functionality
 CreateThread(function()
+    local textUI = {}
     while true do
-        local Sleep = 1500
-        local player = PlayerPedId()
-        local pos = GetEntityCoords(player)
-        for i=1, #Config.MiningAreas, 1 do
-            local dist = #(GetEntityCoords(player) - Config.MiningAreas[i])	
-            if dist <= 10 and not mining then
-                Sleep = 0
-                DrawMarker(0, vector3(Config.MiningAreas[i].x, Config.MiningAreas[i].y, Config.MiningAreas[i].z-0.5), 0.0, 0.0, 0.0, 0, 0.0, 0.0, 0.25, 0.25, 0.25, 255, 205, 0, 100, false, true, 2, true, false, false, false) 
-                if dist <= 1.5 and not mining then
-                    DrawText3Ds(Config.MiningAreas[i], Language['mine_rock'], 0.55, 1.5, 0.7)
-                    if IsControlJustReleased(0, 38) and dist <= 1.5 then
-                        ESX.TriggerServerCallback('wasabi_mining:checkPick', function(output)
-                            if output then
-                                mining = true
-                                local modelHash = Config.Axe
-                                local model = loadModel(modelHash)
-                                local axe = CreateObject(model, GetEntityCoords(PlayerPedId()), true, false, false)
-                                AttachEntityToEntity(axe, PlayerPedId(), GetPedBoneIndex(PlayerPedId(), 57005), 0.09, 0.03, -0.02, -78.0, 13.0, 28.0, false, true, true, true, 0, true)
-                                while mining do
-                                    Wait()
-                                    local unarmed = `WEAPON_UNARMED`
-                                    SetCurrentPedWeapon(PlayerPedId(), unarmed)
-                                    ShowHelp(Language['intro_instruction'])
-                                    DisableControlAction(0, 24, true)
-                                    if IsDisabledControlJustReleased(0, 24) then
-                                        local dict = loadDict('melee@hatchet@streamed_core')
-                                        TaskPlayAnim(PlayerPedId(), dict, 'plyr_rear_takedown_b', 8.0, -8.0, -1, 2, 0, false, false, false)
-                                        local skillbar = CreateSkillbar(1, "medium")
-                                        if skillbar then
-                                            ClearPedTasks(PlayerPedId())
-                                            MineRock(dist)
-                                        elseif not skillbar then
-                                            local breakChance = math.random(1,100)
-                                            if breakChance < Config.AxeBreakPercent then
-                                                TriggerServerEvent('wasabi_mining:axeBroke')
-                                                TriggerEvent('wasabi_mining:notify', Language['axe_broke'])
-                                                ClearPedTasks(PlayerPedId())
-                                                break
-                                            end
-                                            ClearPedTasks(PlayerPedId())
-                                            TriggerEvent('wasabi_mining:notify', Language['failed_mine'])
-                                        end
-                                    elseif IsControlJustReleased(0, 194) then
-                                        break
-                                    elseif #(GetEntityCoords(PlayerPedId()) - Config.MiningAreas[i]) > 2.0 then
+        local sleep = 1500
+        local pos = GetEntityCoords(cache.ped)
+        for i=1, #Config.miningAreas, 1 do
+            local dist = #(pos - Config.miningAreas[i])	
+            if dist <= 2.0 and not mining then
+                sleep = 0
+                if not textUI[i] then
+                    lib.showTextUI(Strings.mine_rock)
+                    textUI[i] = true
+                end
+                if IsControlJustReleased(0, 38) and dist <= 2.0 then
+                    lib.hideTextUI()
+                    local output = lib.callback.await('wasabi_mining:checkPick', 100, 'pickaxe')
+                    if output then
+                        mining = true
+                        local model = Config.axe.prop
+                        lib.requestModel(model, 100)
+                        local axe = CreateObject(model, GetEntityCoords(cache.ped), true, false, false)
+                        AttachEntityToEntity(axe, cache.ped, GetPedBoneIndex(cache.ped, 57005), 0.09, 0.03, -0.02, -78.0, 13.0, 28.0, false, true, true, true, 0, true)
+                        while mining do
+                            Wait()
+                            local unarmed = `WEAPON_UNARMED`
+                            SetCurrentPedWeapon(cache.ped, unarmed)
+                            showHelp(Strings.intro_instruction)
+                            DisableControlAction(0, 24, true)
+                            if IsDisabledControlJustReleased(0, 24) then
+                                lib.requestAnimDict('melee@hatchet@streamed_core', 100)
+                                TaskPlayAnim(cache.ped, 'melee@hatchet@streamed_core', 'plyr_rear_takedown_b', 8.0, -8.0, -1, 2, 0, false, false, false)
+                                local rockData = lib.callback.await('wasabi_mining:getRockData', 100)
+                                if lib.skillCheck(rockData.difficulty) then
+                                    ClearPedTasks(cache.ped)
+                                    tryMine(rockData, i)
+                                else
+                                    local breakChance = math.random(1, 100)
+                                    if breakChance < Config.axe.breakChance then
+                                        TriggerServerEvent('wasabi_mining:axeBroke')
+                                        TriggerEvent('wasabi_mining:notify', Strings.axe_broke, Strings.axe_broke_desc, 'error')
+                                        ClearPedTasks(cache.ped)
+                                        textUI[i] = nil
                                         break
                                     end
+                                    ClearPedTasks(PlayerPedId())
+                                    TriggerEvent('wasabi_mining:notify', Strings.failed_mine, Strings.failed_mine_desc, 'error')
                                 end
-                                mining = false
-                                DeleteObject(axe)
-                            elseif not output then
-                                TriggerEvent('wasabi_mining:notify', Language['no_pickaxe'])
+                            elseif IsControlJustReleased(0, 194) then
+                                textUI[i] = nil
+                                break
+                            elseif #(GetEntityCoords(cache.ped) - Config.miningAreas[i]) > 2.0 then
+                                textUI[i] = nil
+                                break
                             end
-                        end, 'pickaxe')
-                    end	
+                        end
+                        mining = false
+                        textUI[i] = nil
+                        DeleteObject(axe)
+                        SetModelAsNoLongerNeeded(model)
+                        RemoveAnimDict('melee@hatchet@streamed_core')
+                    elseif not output then
+                        TriggerEvent('wasabi_mining:notify', Strings.no_pickaxe, Strings.no_pickaxe_desc, 'error')
+                    end
+                end	
+            elseif dist >= 2.1 then
+                if textUI[i] then
+                    lib.hideTextUI()
+                    textUI[i] = nil
                 end
             end
         end
-        Wait(Sleep)
+        Wait(sleep)
      end
  end)
 
- --Sell Shop Functionality
-CreateThread(function()
-	while true do
-        local Sleep = 1500
-		local player = PlayerPedId()
-		local playerCoords = GetEntityCoords(player)
-		local dist = #(playerCoords - Config.SellShop)
-		if dist <= 10.0 then
-            Sleep = 0
-            DrawMarker(0, vector3(Config.SellShop.x, Config.SellShop.y, Config.SellShop.z-0.5), 0.0, 0.0, 0.0, 0, 0.0, 0.0, 0.25, 0.25, 0.25, 255, 205, 0, 100, false, true, 2, true, false, false, false) 
-            if dist <= 1.5 then
-                DrawText3Ds(Config.SellShop, Language['sell_material'], 0.55, 1.5, 0.7)
-                if IsControlJustReleased(0, 38) and dist <= 1.5 then
-                    MiningSellItems(dist)
+
+ if Config.sellShop.enabled then
+    CreateThread(function()
+        createBlip(Config.sellShop.coords, 207, 5, Strings.sell_shop_blip, 0.80)
+        local ped, pedSpawned
+        local textUI
+        while true do
+            local sleep = 1500
+            local playerPed = cache.ped
+            local coords = GetEntityCoords(playerPed)
+            local dist = #(coords - Config.sellShop.coords)
+            if dist <= 30 and not pedSpawned then
+                lib.requestAnimDict('mini@strip_club@idles@bouncer@base', 100)
+                lib.requestModel(Config.sellShop.ped, 100)
+                ped = CreatePed(28, Config.sellShop.ped, Config.sellShop.coords.x, Config.sellShop.coords.y, Config.sellShop.coords.z, Config.sellShop.heading, false, false)
+                FreezeEntityPosition(ped, true)
+                SetEntityInvincible(ped, true)
+                SetBlockingOfNonTemporaryEvents(ped, true)
+                TaskPlayAnim(ped, 'mini@strip_club@idles@bouncer@base', 'base', 8.0, 0.0, -1, 1, 0, 0, 0, 0)
+                pedSpawned = true
+            elseif dist <= 1.8 and pedSpawned then
+                sleep = 0
+                if not textUI then
+                    lib.showTextUI(Strings.sell_material)
+                    textUI = true
                 end
-			end
-		end
-    Wait(Sleep)
-	end
-end)
+                if IsControlJustReleased(0, 38) then
+                    miningSellItems()
+                end
+            elseif dist >= 1.9 and textUI then
+                sleep = 0
+                lib.hideTextUI()
+                textUI = nil
+            elseif dist >= 31 and pedSpawned then
+                local model = GetEntityModel(ped)
+                SetModelAsNoLongerNeeded(model)
+                DeletePed(ped)
+                SetPedAsNoLongerNeeded(ped)
+                RemoveAnimDict('mini@strip_club@idles@bouncer@base')
+                pedSpawned = nil
+            end
+            Wait(sleep)
+        end
+    end)
+end
 
 RegisterNetEvent('wasabi_mining:alertStaff')
 AddEventHandler('wasabi_mining:alertStaff', function()
-    TriggerEvent('wasabi_mining:notify', Language['possible_cheater'])
+    TriggerEvent('wasabi_mining:notify', Strings.possible_cheater, Strings.possible_cheater_desc, 'error')
 end)
