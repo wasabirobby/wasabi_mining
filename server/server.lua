@@ -4,95 +4,87 @@
 
 ESX = exports["es_extended"]:getSharedObject()
 
-ESX.RegisterServerCallback('wasabi_mining:checkPick', function(source, cb, itemname)
+lib.callback.register('wasabi_mining:checkPick', function(source, itemname)
     local xPlayer = ESX.GetPlayerFromId(source)
     local item = xPlayer.getInventoryItem(itemname).count
     if item >= 1 then
-        cb(true)
+        return true
     else
-        cb(false)
+        return false
     end
 end)
 
+lib.callback.register('wasabi_mining:getRockData', function(source)
+    local data = Config.rocks[math.random(#Config.rocks)]
+    return data
+end)
+
+local addCommas = function(n)
+	return tostring(math.floor(n)):reverse():gsub("(%d%d%d)","%1,")
+								  :gsub(",(%-?)$","%1"):reverse()
+end
+
 RegisterServerEvent("wasabi_mining:mineRock")
-AddEventHandler("wasabi_mining:mineRock", function(distance)
-    if distance ~= nil then
-        if distance <= 3 then
-            local awardItem = Config.Rocks[math.random(#Config.Rocks)]
-            local xPlayer = ESX.GetPlayerFromId(source)
-            local awardItemLabel = ESX.GetItemLabel(awardItem)
-            if Config.OldESX then
-                local limitItem = xPlayer.getInventoryItem(awardItem)
-                if limitItem.limit == -1 or (limitItem.count + 1) <= limitItem.limit then
-                    xPlayer.addInventoryItem(awardItem, 1)
-                    TriggerClientEvent('wasabi_mining:notify', source, Language['rewarded']..' '..awardItemLabel)
-                    if Config.DiscordMiningLogs then
-                        sendToDiscord("Wasabi Mining","**"..GetPlayerName(source).."** just mined rocks and was rewarded a "..awardItemLabel.."!\n**"..ESX.GetPlayerFromId(source).getIdentifier().."**", 3066993)
-                    end
-                else
-                    TriggerClientEvent('wasabi_mining:notify', source, Language['cantcarry']..' '..awardItemLabel)
-                end
-            else
-                if xPlayer.canCarryItem(awardItem, 1) then
-                    xPlayer.addInventoryItem(awardItem, 1)
-                    TriggerClientEvent('wasabi_mining:notify', source, Language['rewarded']..' '..awardItemLabel)
-                    if Config.DiscordMiningLogs then
-                        sendToDiscord("Wasabi Mining","**"..GetPlayerName(source).."** just mined rocks and was rewarded a "..awardItemLabel.."!\n**"..ESX.GetPlayerFromId(source).getIdentifier().."**", 3066993)
-                    end
-                else
-                    TriggerClientEvent('wasabi_mining:notify', source, Language['cantcarry']..' '..awardItemLabel)
-                end
-            end
+AddEventHandler("wasabi_mining:mineRock", function(data, index)
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local playerPed = GetPlayerPed(source)
+    local playerCoord = GetEntityCoords(playerPed)
+    local distance = #(playerCoord - Config.miningAreas[index])
+    if distance == nil then
+        xPlayer.kick(Strings.kicked)
+        return
+    end
+    if distance > 10 then
+        xPlayer.kick(Strings.kicked)
+        return
+    end
+    local awardItem = data.item
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local awardItemLabel = ESX.GetItemLabel(awardItem)
+    if Config.OldESX then
+        local limitItem = xPlayer.getInventoryItem(awardItem)
+        if limitItem.limit == -1 or (limitItem.count + 1) <= limitItem.limit then
+            xPlayer.addInventoryItem(awardItem, 1)
+            TriggerClientEvent('wasabi_mining:notify', source, Strings.rewarded, Strings.rewarded_desc..' '..awardItemLabel, 'success')
         else
-            local xPlayer = ESX.GetPlayerFromId(source)
-            TriggerClientEvent('wasabi_mining:alertStaff', source)
-            if Config.DiscordCheatLogs then
-                sendToDiscord("Wasabi Mining","**"..GetPlayerName(source).."** just mined rocks and failed the distance check!\n**"..ESX.GetPlayerFromId(source).getIdentifier().."**", 15158332)
-            end
-            Wait(2000)
-            xPlayer.kick(Language['kicked'])
+            TriggerClientEvent('wasabi_mining:notify', source, Strings.cantcarry, Strings.cantcarry_desc..' '..awardItemLabel, 'error')
         end
     else
-        TriggerClientEvent('wasabi_mining:alertStaff', source)
-        if Config.DiscordCheatLogs then
-            sendToDiscord("Wasabi Mining","**"..GetPlayerName(source).."** just mined rocks and failed the distance check!\n**"..ESX.GetPlayerFromId(source).getIdentifier().."**", 15158332)
+        if xPlayer.canCarryItem(awardItem, 1) then
+            xPlayer.addInventoryItem(awardItem, 1)
+            TriggerClientEvent('wasabi_mining:notify', source, Strings.rewarded, Strings.rewarded_desc..' '..awardItemLabel, 'success')
+        else
+            TriggerClientEvent('wasabi_mining:notify', source, Strings.cantcarry, Strings.cantcarry_desc..' '..awardItemLabel, 'error')
         end
-        Wait(2000)
-        xPlayer.kick(Language['kicked'])
     end
 end)
 
 RegisterServerEvent('wasabi_mining:sellRock')
-AddEventHandler('wasabi_mining:sellRock', function(distance)
-    if distance ~= nil then
-        if distance <= 3 then
-            for k, v in pairs(Config.RockPrices) do
-                local xPlayer = ESX.GetPlayerFromId(source)
-                if xPlayer.getInventoryItem(k).count > 0 then
-                    local rewardAmount = 0
-                    for i = 1, xPlayer.getInventoryItem(k).count do
-                        rewardAmount = rewardAmount + math.random(v[1], v[2])
-                    end
-                    xPlayer.addMoney(rewardAmount)
-                    TriggerClientEvent('wasabi_mining:notify', source, Language['sold_for']..' '..xPlayer.getInventoryItem(k).count..' '..xPlayer.getInventoryItem(k).label..' '..Language['sold_for2']..''..rewardAmount)
-                    xPlayer.removeInventoryItem(k, xPlayer.getInventoryItem(k).count)
-                end
+AddEventHandler('wasabi_mining:sellRock', function()
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local playerPed = GetPlayerPed(source)
+    local playerCoord = GetEntityCoords(playerPed)
+    local distance = #(playerCoord - Config.sellShop.coords)
+    if distance == nil then
+        xPlayer.kick(Strings.kicked)
+        return
+    end
+    if distance > 3 then
+        xPlayer.kick(Strings.kicked)
+        return
+    end
+    for i=1, #Config.rocks do
+        if xPlayer.getInventoryItem(Config.rocks[i].item).count then
+            local rewardAmount = 0
+            for j=1, xPlayer.getInventoryItem(Config.rocks[i].item).count do
+                rewardAmount = rewardAmount + math.random(Config.rocks[i].price[1], Config.rocks[i].price[2])
             end
-        else
-            TriggerClientEvent('wasabi_mining:alertStaff', source) 
-            if Config.DiscordCheatLogs then
-                sendToDiscord("Wasabi Mining","**"..GetPlayerName(source).."** just attempted to sell rocks and failed the distance check!\n**"..ESX.GetPlayerFromId(source).getIdentifier().."**", 15158332)
+            if rewardAmount > 0 then
+                xPlayer.addMoney(rewardAmount)
+                TriggerClientEvent('wasabi_mining:notify', source, Strings.sold_for, (Strings.sold_for_desc):format(xPlayer.getInventoryItem(Config.rocks[i].item).count, xPlayer.getInventoryItem(Config.rocks[i].item).label, addCommas(rewardAmount)), 'success')
+                xPlayer.removeInventoryItem(Config.rocks[i].item, xPlayer.getInventoryItem(Config.rocks[i].item).count)
             end
-            Wait(2000)
-            xPlayer.kick(Language['kicked'])
         end
-    else
-        TriggerClientEvent('wasabi_mining:alertStaff', source) 
-        if Config.DiscordCheatLogs then
-            sendToDiscord("Wasabi Mining","**"..GetPlayerName(source).."** just attempted to sell rocks and failed the distance check!\n**"..ESX.GetPlayerFromId(source).getIdentifier().."**", 15158332)
-        end
-        Wait(2000)
-        xPlayer.kick(Language['kicked'])
     end
 end)
 
@@ -103,10 +95,7 @@ AddEventHandler('wasabi_mining:axeBroke', function()
     if xItem.count >= 1 then
         xPlayer.removeInventoryItem('pickaxe', 1)
     else
-        if Config.DiscordCheatLogs then
-            sendToDiscord("Wasabi Mining","**"..GetPlayerName(source).."** broke a pickaxe without having one in inventory!\n**"..ESX.GetPlayerFromId(source).getIdentifier().."**", 15158332)
-        end
         Wait(2000)
-        xPlayer.kick(Language['kicked'])
+        xPlayer.kick(Strings.kicked)
     end
 end)
