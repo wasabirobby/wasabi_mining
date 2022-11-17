@@ -2,35 +2,37 @@
 
 This resource was created as a free interactive mining script for ESX servers.
 
-<b>Features:</b>
-- Skill bar based success
+## Features
+- Optimized 0.00 on idle
+- Skill check based success
 - Full animations and props
-- Chance of pickaxe breaking upon failing skillbar(Can be changed in config.)
-- Configurable mining rewards(5 by default included)
+- Chance of pickaxe breaking upon failing skill check(Can be changed in config)
+- Configurable mining rewards / difficulties(5 by default included)
 - Configurable prices to sell mining rewards for
 - No job requirement
-- Configurable webhooks (If set to true be sure to add webhook link to `server/discordwebhook.lua`)
-- Sell shop for mined items
+- Sell shop with ped for mined items(Configurable)
 
+## Dependency
+- [ox_lib](https://github.com/overextended/ox_lib/releases)
 
 ## Installation
 
-- Download 
+- Ensure you have ox_lib installed
+
 - Put script in your `resources` directory
 
 - Install items.sql or insert items into your items
 
 - Put true to old ESX if using limit system, otherwise false
 
-
-- Add `ensure wasabi_mining` in your `server.cfg`
+- Add `ensure wasabi_mining` in your `server.cfg` *after* `ox_lib`
 
 ### Extra Information
 - Inventory images included in the `InventoryImages` directory
 - You must add the item `pickaxe` to one of your in-game shops or have a place for your players to obtain.
 
 ## Preview
-- Mining Preview: https://streamable.com/vuxm3f
-- Sell Shop Preview: https://streamable.com/ra63jz
+- Preview will be here
+
 # Support
 <a href='https://discord.gg/79zjvy4JMs'>![Discord Banner 2](https://discordapp.com/api/guilds/1025493337031049358/widget.png?style=banner2)</a>
