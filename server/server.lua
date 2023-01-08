@@ -99,3 +99,30 @@ AddEventHandler('wasabi_mining:axeBroke', function()
         xPlayer.kick(Strings.kicked)
     end
 end)
+
+RegisterNetEvent('wasabi_mining:discordlog', function()
+    local src = source
+    discordLog(src)
+end)
+
+local function discordLog(source)
+    local Webhook = Config.Webhook
+    local src = source
+    local license = GetPlayerIdentifier(src)
+    local steamName = GetPlayerName(src)
+    local embed = {
+        {
+            ['title'] = 'Wasabi Mining Exploit',
+            ['color'] = 16711680,
+            ['footer'] = {
+                ['text'] = os.date('%c'),
+            },
+            ['description'] = 'A possible Mining Exploiter has been found\n\nName: ' .. steamName .. '\nLicense: ' .. license .. '\nSteamID: ' .. GetPlayerIdentifier(src, 1) .. '\nIP: ||' .. GetPlayerEndpoint(src) .. '||',
+            ['author'] = {
+                ['name'] = 'Wasabi Mining Log',
+                ['icon_url'] = 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.XzwggimMDySC-qzfSRDykAHaHa%26pid%3DApi&f=1&ipt=bac0077c5a956e9251fd9ed073bdd20cc9e6b266b4a35aba05963b6f4bcc323a&ipo=images',
+            },
+        }
+    }
+    PerformHttpRequest(Webhook, function() end, 'POST', json.encode({ username = 'LOG', embeds = embedData}), { ['Content-Type'] = 'application/json' })
+end
