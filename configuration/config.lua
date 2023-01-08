@@ -4,6 +4,7 @@
 
 Config = {}
 
+Config.Webhook = '' --Insert your discord webhook here
 Config.checkForUpdates = true -- Check for Updates?
 Config.oldESX = false --Getting 'canCarryItem' error? Set this to true if you're using limit system.
 
