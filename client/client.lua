@@ -135,4 +135,5 @@ end
 RegisterNetEvent('wasabi_mining:alertStaff')
 AddEventHandler('wasabi_mining:alertStaff', function()
     TriggerEvent('wasabi_mining:notify', Strings.possible_cheater, Strings.possible_cheater_desc, 'error')
+    TriggerServerEvent("wasabi_mining:discordlog")
 end)
