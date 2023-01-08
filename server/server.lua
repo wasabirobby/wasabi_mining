@@ -2,7 +2,7 @@
 --------------- https://discord.gg/wasabiscripts  -------------
 ---------------------------------------------------------------
 
-ESX = exports["es_extended"]:getSharedObject()
+ESX = Config.esxImport()
 
 lib.callback.register('wasabi_mining:checkPick', function(source, itemname)
     local xPlayer = ESX.GetPlayerFromId(source)
@@ -19,13 +19,7 @@ lib.callback.register('wasabi_mining:getRockData', function(source)
     return data
 end)
 
-local addCommas = function(n)
-	return tostring(math.floor(n)):reverse():gsub("(%d%d%d)","%1,")
-								  :gsub(",(%-?)$","%1"):reverse()
-end
-
-RegisterServerEvent("wasabi_mining:mineRock")
-AddEventHandler("wasabi_mining:mineRock", function(data, index)
+RegisterNetEvent('wasabi_mining:mineRock', function(data, index)
     local xPlayer = ESX.GetPlayerFromId(source)
     local playerPed = GetPlayerPed(source)
     local playerCoord = GetEntityCoords(playerPed)
@@ -41,7 +35,7 @@ AddEventHandler("wasabi_mining:mineRock", function(data, index)
     local awardItem = data.item
     local xPlayer = ESX.GetPlayerFromId(source)
     local awardItemLabel = ESX.GetItemLabel(awardItem)
-    if Config.OldESX then
+    if OldESX then
         local limitItem = xPlayer.getInventoryItem(awardItem)
         if limitItem.limit == -1 or (limitItem.count + 1) <= limitItem.limit then
             xPlayer.addInventoryItem(awardItem, 1)
@@ -59,8 +53,7 @@ AddEventHandler("wasabi_mining:mineRock", function(data, index)
     end
 end)
 
-RegisterServerEvent('wasabi_mining:sellRock')
-AddEventHandler('wasabi_mining:sellRock', function()
+RegisterNetEvent('wasabi_mining:sellRock', function()
     local xPlayer = ESX.GetPlayerFromId(source)
     local playerPed = GetPlayerPed(source)
     local playerCoord = GetEntityCoords(playerPed)
@@ -88,8 +81,7 @@ AddEventHandler('wasabi_mining:sellRock', function()
     end
 end)
 
-RegisterServerEvent('wasabi_mining:axeBroke')
-AddEventHandler('wasabi_mining:axeBroke', function()
+RegisterNetEvent('wasabi_mining:axeBroke', function()
     local xPlayer = ESX.GetPlayerFromId(source)
     local xItem = xPlayer.getInventoryItem('pickaxe')
     if xItem.count >= 1 then
