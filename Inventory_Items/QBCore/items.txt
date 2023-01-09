@@ -1,0 +1,9 @@
+
+-- Add to qb-core/shared/items.lua
+	['pickaxe'] 		 			 = {['name'] = 'pickaxe', 					['label'] = 'Pickaxe', 				['weight'] = 120, 		['type'] = 'item', 		['image'] = 'pickaxe.png', 			['unique'] = false, 	['useable'] = false, 	['shouldClose'] = true,	   ['combinable'] = nil,   ['description'] = 'A tool used for mining.'},
+    ['emerald'] 		 			 = {['name'] = 'emerald', 					['label'] = 'Emerald', 				['weight'] = 20, 		['type'] = 'item', 		['image'] = 'emerald.png', 			['unique'] = false, 	['useable'] = false, 	['shouldClose'] = true,	   ['combinable'] = true,   ['description'] = 'A precious jewel.'},
+    ['diamond'] 		 			 = {['name'] = 'diamond', 					['label'] = 'Diamond', 				['weight'] = 10, 		['type'] = 'item', 		['image'] = 'diamond.png', 			['unique'] = false, 	['useable'] = false, 	['shouldClose'] = true,	   ['combinable'] = true,   ['description'] = 'A precious jewel.'},
+    ['copper'] 		 			 = {['name'] = 'copper', 					['label'] = 'Copper', 				['weight'] = 80, 		['type'] = 'item', 		['image'] = 'copper.png', 			['unique'] = false, 	['useable'] = false, 	['shouldClose'] = true,	   ['combinable'] = true,   ['description'] = 'A metal obtained mining.'},
+    ['iron'] 		 			 = {['name'] = 'iron', 					['label'] = 'Iron', 				['weight'] = 180, 		['type'] = 'item', 		['image'] = 'iron.png', 			['unique'] = false, 	['useable'] = false, 	['shouldClose'] = true,	   ['combinable'] = true,   ['description'] = 'A metal obtained mining.'},
+    ['steel'] 		 			 = {['name'] = 'steel', 					['label'] = 'Steel', 				['weight'] = 190, 		['type'] = 'item', 		['image'] = 'steel.png', 			['unique'] = false, 	['useable'] = false, 	['shouldClose'] = true,	   ['combinable'] = true,   ['description'] = 'A metal obtained mining.'},
+    
