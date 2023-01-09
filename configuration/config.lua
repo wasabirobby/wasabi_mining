@@ -4,29 +4,19 @@
 
 Config = {}
 
-Config.esxImport = function()
-    if IsDuplicityVersion() then
-        --[[ SERVER ]]
-        return exports['es_extended']:getSharedObject()
-    else
-        --[[ CLIENT ]]
-        return exports['es_extended']:getSharedObject()
-    end
-end
-
 Config.checkForUpdates = true -- Check for Updates?
 
 Config.axe = {
-    prop = `prop_tool_pickaxe`, -- Default: `prop_tool_pickaxe`
+    prop = `prop_tool_pickaxe`, --Default: `prop_tool_pickaxe`
     breakChance = 20 -- When failing to mine rock, this is the percentage of a chance that your pickaxe will 'break'
 }
 
 Config.rocks = { -- Items obtained from mining
-    { item = 'emerald', price = {190, 220}, difficulty = {'medium', 'medium', 'easy'} },
-    { item = 'diamond', price = {150, 180}, difficulty = {'medium', 'easy', 'easy'} },
-    { item = 'copper', price = {110, 140}, difficulty = {'medium', 'easy'} },
-    { item = 'iron', price = {70, 100}, difficulty = {'easy', 'easy'} },
-    { item = 'steel', price = {40, 60}, difficulty = {'easy', 'easy'} },
+    { item = 'emerald', label = 'Emerald', price = {190, 220}, difficulty = {'medium', 'medium', 'easy'} },
+    { item = 'diamond', label = 'Diamond', price = {150, 180}, difficulty = {'medium', 'easy', 'easy'} },
+    { item = 'copper', label = 'Copper', price = {110, 140}, difficulty = {'medium', 'easy'} },
+    { item = 'iron', label = 'Iron', price = {70, 100}, difficulty = {'easy', 'easy'} },
+    { item = 'steel', label = 'Steel', price = {40, 60}, difficulty = {'easy', 'easy'} },
 }
 
 
@@ -47,13 +37,20 @@ Config.sellShop = {
     ped = 'cs_joeminuteman' -- Ped name here
 }
 
--- Place notification system info here, ex: exports['mythic_notify']:SendAlert('inform', message)
-RegisterNetEvent('wasabi_mining:notify', function(title, message, msgType)
-    msgType = msgType or 'inform'
-
-    lib.notify({
-        title = title,
-        description = message,
-        type = msgType
-    })
+RegisterNetEvent('wasabi_mining:notify')
+AddEventHandler('wasabi_mining:notify', function(title, message, msgType)	
+    -- Place notification system info here, ex: exports['mythic_notify']:SendAlert('inform', message)
+    if not msgType then
+        lib.notify({
+            title = title,
+            description = message,
+            type = 'inform'
+        })
+    else
+        lib.notify({
+            title = title,
+            description = message,
+            type = msgType
+        })
+    end
 end)
