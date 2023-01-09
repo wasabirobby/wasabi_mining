@@ -54,7 +54,7 @@ AddEventHandler('wasabi_mining:sellRock', function()
     for i=1, #Config.rocks do
         if HasItem(source, Config.rocks[i].item) >= 1 then
             local rewardAmount = 0
-            for j=1, HasItem(Config.rocks[i].item) do
+            for j=1, HasItem(source, Config.rocks[i].item) do
                 rewardAmount = rewardAmount + math.random(Config.rocks[i].price[1], Config.rocks[i].price[2])
             end
             if rewardAmount > 0 then
@@ -68,11 +68,10 @@ end)
 
 RegisterServerEvent('wasabi_mining:axeBroke')
 AddEventHandler('wasabi_mining:axeBroke', function()
-    local xPlayer = ESX.GetPlayerFromId(source)
     if HasItem(source, 'pickaxe') >= 1 then
         RemoveItem(source, 'pickaxe', 1)
     else
         Wait(2000)
-        xPlayer.kick(Strings.kicked)
+        KickPlayer(source, Strings.kicked)
     end
 end)
