@@ -2,12 +2,11 @@
 --------------- https://discord.gg/wasabiscripts  -------------
 ---------------------------------------------------------------
 
-ESX = Config.esxImport()
 local mining = false
 
 CreateThread(function()
     for i=1, #Config.miningAreas, 1 do
-        createBlip(Config.miningAreas[i], 85, 5, Strings.mining_blips, 0.75)
+        CreateBlip(Config.miningAreas[i], 85, 5, Strings.mining_blips, 0.75)
     end
 end)
 
@@ -74,7 +73,7 @@ CreateThread(function()
                     elseif not output then
                         TriggerEvent('wasabi_mining:notify', Strings.no_pickaxe, Strings.no_pickaxe_desc, 'error')
                     end
-                end
+                end	
             elseif dist >= 2.1 then
                 if textUI[i] then
                     lib.hideTextUI()
@@ -83,13 +82,13 @@ CreateThread(function()
             end
         end
         Wait(sleep)
-    end
-end)
+     end
+ end)
 
 
-if Config.sellShop.enabled then
+ if Config.sellShop.enabled then
     CreateThread(function()
-        createBlip(Config.sellShop.coords, 207, 5, Strings.sell_shop_blip, 0.80)
+        CreateBlip(Config.sellShop.coords, 207, 5, Strings.sell_shop_blip, 0.80)
         local ped, pedSpawned
         local textUI
         while true do
@@ -132,6 +131,7 @@ if Config.sellShop.enabled then
     end)
 end
 
-RegisterNetEvent('wasabi_mining:alertStaff', function()
+RegisterNetEvent('wasabi_mining:alertStaff')
+AddEventHandler('wasabi_mining:alertStaff', function()
     TriggerEvent('wasabi_mining:notify', Strings.possible_cheater, Strings.possible_cheater_desc, 'error')
 end)
