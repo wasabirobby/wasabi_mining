@@ -59,8 +59,8 @@ AddEventHandler('wasabi_mining:sellRock', function()
             end
             if rewardAmount > 0 then
                 AddMoney(source, 'money', rewardAmount)
-                TriggerClientEvent('wasabi_mining:notify', source, Strings.sold_for, (Strings.sold_for_desc):format(xPlayer.getInventoryItem(Config.rocks[i].item).count, xPlayer.getInventoryItem(Config.rocks[i].item).label, addCommas(rewardAmount)), 'success')
-                RemoveItem(source, Config.rocks[i].item, HasItem(Config.rocks[i].item))
+                TriggerClientEvent('wasabi_mining:notify', source, Strings.sold_for, (Strings.sold_for_desc):format(HasItem(source, Config.rocks[i].item), Config.rocks[i].label, addCommas(rewardAmount)), 'success')
+                RemoveItem(source, Config.rocks[i].item, HasItem(source, Config.rocks[i].item))
             end
         end
     end
