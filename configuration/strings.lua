@@ -28,7 +28,7 @@ Strings = {
     axe_broke = 'Axe Broke',
     axe_broke_desc = 'You hit the rock wrong and your axe snapped!',
     cantcarry = 'Can\'t Carry',
-    cantcarry_desc = 'No more room to carry this!',
+    cantcarry_desc = 'No more room to carry 1x',
     possible_cheater = 'Exploit Detected',
     possible_cheater_desc = 'You have been reported to staff.',
 
