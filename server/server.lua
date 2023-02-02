@@ -34,8 +34,18 @@ AddEventHandler("wasabi_mining:mineRock", function(data, index)
         KickPlayer(Strings.kicked)
         return
     end
-    AddItem(source, data.item, 1)
-    TriggerClientEvent('wasabi_mining:notify', source, Strings.rewarded, Strings.rewarded_desc..' '..data.label, 'success')
+    if Framework == 'esx' and not Config.oldESX then
+        local player = GetPlayer(source)
+        if player.canCarryItem(data.item, 1) then
+            AddItem(source, data.item, 1)
+            TriggerClientEvent('wasabi_mining:notify', source, Strings.rewarded, Strings.rewarded_desc..' '..data.label, 'error')
+        else
+	    TriggerClientEvent('wasabi_mining:notify', source, Strings.cantcarry, Strings.cantcarry_desc..' '..data.label, 'success')
+        end
+    else
+        AddItem(source, data.item, 1)
+        TriggerClientEvent('wasabi_mining:notify', source, Strings.rewarded, Strings.rewarded_desc..' '..data.label, 'success')
+    end
 end)
 
 RegisterServerEvent('wasabi_mining:sellRock')
