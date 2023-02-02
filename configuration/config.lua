@@ -4,6 +4,7 @@
 
 Config = {}
 
+Config.Webhook = '' --Insert your discord webhook here
 Config.checkForUpdates = true -- Check for Updates?
 Config.oldESX = false -- Does not apply to qb users (If set to true, won't check if player can carry item)
 
