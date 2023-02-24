@@ -1,0 +1,48 @@
+	['copper'] = {
+		label = 'Copper',
+		weight = 750,
+		stack = true,
+		close = false,
+	},
+
+	['diamond'] = {
+		label = 'Diamond',
+		weight = 105,
+		stack = true,
+		close = false,
+	},
+
+	['gold'] = {
+		label = 'Gold Bar',
+		weight = 950,
+		stack = false,
+		close = false,
+	},
+
+	['iron'] = {
+		label = 'Iron',
+		weight = 750,
+		stack = true,
+		close = false,
+	},
+
+	['steel'] = {
+		label = 'Steel',
+		weight = 610,
+		stack = true,
+		close = false,
+	},
+
+	['emerald'] = {
+		label = 'Emerald',
+		weight = 105,
+		stack = true,
+		close = false,
+	},
+
+	['pickaxe'] = {
+		label = 'Pickaxe',
+		weight = 450,
+		stack = false,
+		close = false,
+	},

@@ -2,12 +2,11 @@
 --------------- https://discord.gg/wasabiscripts  -------------
 ---------------------------------------------------------------
 
-ESX = exports["es_extended"]:getSharedObject()
 local mining = false
 
 CreateThread(function()
     for i=1, #Config.miningAreas, 1 do
-        createBlip(Config.miningAreas[i], 85, 5, Strings.mining_blips, 0.75)
+        CreateBlip(Config.miningAreas[i], 85, 5, Strings.mining_blips, 0.75)
     end
 end)
 
@@ -89,7 +88,7 @@ CreateThread(function()
 
  if Config.sellShop.enabled then
     CreateThread(function()
-        createBlip(Config.sellShop.coords, 207, 5, Strings.sell_shop_blip, 0.80)
+        CreateBlip(Config.sellShop.coords, 207, 5, Strings.sell_shop_blip, 0.80)
         local ped, pedSpawned
         local textUI
         while true do

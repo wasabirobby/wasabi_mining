@@ -7,7 +7,7 @@ showHelp = function(msg)
     EndTextCommandDisplayHelp(0, false, true, -1)
 end
 
-createBlip = function(coords, sprite, colour, text, scale)
+CreateBlip = function(coords, sprite, colour, text, scale)
     local blip = AddBlipForCoord(coords)
     SetBlipSprite(blip, sprite)
     SetBlipColour(blip, colour)

@@ -1,9 +1,10 @@
 # wasabi_mining
 
-This resource was created as a free interactive mining script for ESX servers.
+This resource was created as a free interactive mining script for ESX/QBCore servers.
 
 ## Features
 - Optimized 0.00 on idle
+- Supports ESX/QBCore out of the box. Ability to easily adapt additional frameworks.sss
 - Skill check based success
 - Full animations and props
 - Chance of pickaxe breaking upon failing skill check(Can be changed in config)
@@ -13,6 +14,7 @@ This resource was created as a free interactive mining script for ESX servers.
 - Sell shop with ped for mined items(Configurable)
 
 ## Dependency
+- es_extended OR qb-core
 - [ox_lib](https://github.com/overextended/ox_lib/releases)
 
 ## Installation
@@ -21,14 +23,12 @@ This resource was created as a free interactive mining script for ESX servers.
 
 - Put script in your `resources` directory
 
-- Install items.sql or insert items into your items
-
-- Put true to old ESX if using limit system, otherwise false
+- Make sure all items from config are in items(Check `Inventory_Items` folder for more examples)
 
 - Add `ensure wasabi_mining` in your `server.cfg` *after* `ox_lib`
 
 ### Extra Information
-- Inventory images included in the `InventoryImages` directory
+- Inventory images included in the `Inventory_Items/InventoryImages` directory
 - You must add the item `pickaxe` to one of your in-game shops or have a place for your players to obtain.
 
 ## Preview

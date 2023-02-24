@@ -1,3 +1,7 @@
+-----------------For support, scripts, and more----------------
+--------------- https://discord.gg/wasabiscripts  -------------
+---------------------------------------------------------------
+
 Strings = {
     --Blips
     mining_blips = 'Mine',

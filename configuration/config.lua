@@ -6,7 +6,7 @@ Config = {}
 
 Config.Webhook = '' --Insert your discord webhook here
 Config.checkForUpdates = true -- Check for Updates?
-Config.oldESX = false --Getting 'canCarryItem' error? Set this to true if you're using limit system.
+Config.oldESX = false -- Does not apply to qb users (If set to true, won't check if player can carry item)
 
 Config.axe = {
     prop = `prop_tool_pickaxe`, --Default: `prop_tool_pickaxe`
@@ -14,11 +14,11 @@ Config.axe = {
 }
 
 Config.rocks = { -- Items obtained from mining
-    { item = 'emerald', price = {190, 220}, difficulty = {'medium', 'medium', 'easy'} },
-    { item = 'diamond', price = {150, 180}, difficulty = {'medium', 'easy', 'easy'} },
-    { item = 'copper', price = {110, 140}, difficulty = {'medium', 'easy'} },
-    { item = 'iron', price = {70, 100}, difficulty = {'easy', 'easy'} },
-    { item = 'steel', price = {40, 60}, difficulty = {'easy', 'easy'} },
+    { item = 'emerald', label = 'Emerald', price = {190, 220}, difficulty = {'medium', 'medium', 'easy'} },
+    { item = 'diamond', label = 'Diamond', price = {150, 180}, difficulty = {'medium', 'easy', 'easy'} },
+    { item = 'copper', label = 'Copper', price = {110, 140}, difficulty = {'medium', 'easy'} },
+    { item = 'iron', label = 'Iron', price = {70, 100}, difficulty = {'easy', 'easy'} },
+    { item = 'steel', label = 'Steel', price = {40, 60}, difficulty = {'easy', 'easy'} },
 }
 
 
