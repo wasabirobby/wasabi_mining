@@ -6,7 +6,7 @@ fx_version 'cerulean'
 game 'gta5'
 lua54 'yes'
 
-version '2.0.3'
+version '2.0.4'
 author 'wasabirobby#5110'
 description 'A simple yet smooth ESX/QBCore based mining script'
 
