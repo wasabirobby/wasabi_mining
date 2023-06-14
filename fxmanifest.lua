@@ -7,7 +7,7 @@ game 'gta5'
 lua54 'yes'
 
 version '2.0.4'
-author 'wasabirobby#5110'
+author 'wasabirobby'
 description 'A simple yet smooth ESX/QBCore based mining script'
 
 shared_scripts { '@ox_lib/init.lua', 'configuration/*.lua' }
