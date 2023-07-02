@@ -11,11 +11,11 @@ RegisterNetEvent('esx:playerLoaded', function(xPlayer)
 end)
 
 RegisterNetEvent('esx:onPlayerSpawn', function()
-    TriggerEvent('wasabi_bridge:onPlayerSpawn')
+    TriggerEvent('wasabi_mining:onPlayerSpawn')
 end)
 
 AddEventHandler('esx:onPlayerDeath', function(data)
-    TriggerEvent('wasabi_bridge:onPlayerDeath')
+    TriggerEvent('wasabi_mining:onPlayerDeath')
 end)
 
 RegisterNetEvent('esx:onPlayerLogout', function()
