@@ -19,8 +19,8 @@ CreateBlip = function(coords, sprite, colour, text, scale)
     return blip
 end
 
-tryMine = function(data, index)
-    TriggerServerEvent('wasabi_mining:mineRock', data, index)
+tryMine = function(index, indexArea)
+    TriggerServerEvent('wasabi_mining:mineRock', index, indexArea)
 end
 
 miningSellItems = function()

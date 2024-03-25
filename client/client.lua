@@ -25,7 +25,7 @@ CreateThread(function()
                 end
                 if IsControlJustReleased(0, 38) and dist <= 2.0 then
                     lib.hideTextUI()
-                    local output = lib.callback.await('wasabi_mining:checkPick', 100, 'pickaxe')
+                    local output = lib.callback.await('wasabi_mining:checkPick', 100, 'mining_pickaxe')
                     if output then
                         mining = true
                         local model = Config.axe.prop
@@ -41,10 +41,10 @@ CreateThread(function()
                             if IsDisabledControlJustReleased(0, 24) then
                                 lib.requestAnimDict('melee@hatchet@streamed_core', 100)
                                 TaskPlayAnim(cache.ped, 'melee@hatchet@streamed_core', 'plyr_rear_takedown_b', 8.0, -8.0, -1, 2, 0, false, false, false)
-                                local rockData = lib.callback.await('wasabi_mining:getRockData', 100)
-                                if lib.skillCheck(rockData.difficulty) then
+                                local rockIndex = math.random(#Config.rocks)
+                                if lib.skillCheck(Config.rocks[rockIndex].difficulty) then
                                     ClearPedTasks(cache.ped)
-                                    tryMine(rockData, i)
+                                    tryMine(rockIndex, i)
                                 else
                                     local breakChance = math.random(1, 100)
                                     if breakChance < Config.axe.breakChance then
