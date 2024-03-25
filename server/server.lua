@@ -11,21 +11,21 @@ lib.callback.register('wasabi_mining:checkPick', function(source, itemname)
     end
 end)
 
-lib.callback.register('wasabi_mining:getRockData', function(source)
-    local data = Config.rocks[math.random(#Config.rocks)]
-    return data
-end)
-
 local addCommas = function(n)
 	return tostring(math.floor(n)):reverse():gsub("(%d%d%d)","%1,")
 								  :gsub(",(%-?)$","%1"):reverse()
 end
 
 RegisterServerEvent("wasabi_mining:mineRock")
-AddEventHandler("wasabi_mining:mineRock", function(data, index)
+AddEventHandler("wasabi_mining:mineRock", function(index, indexArea)
+    if type(index) ~= "number" then return end
+
+    local data = Config.rocks[index]
+    if data == nil then return end
+
     local playerPed = GetPlayerPed(source)
     local playerCoord = GetEntityCoords(playerPed)
-    local distance = #(playerCoord - Config.miningAreas[index])
+    local distance = #(playerCoord - Config.miningAreas[indexArea])
     if distance == nil then
         KickPlayer(source, Strings.kicked)
         return
